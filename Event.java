@@ -15,11 +15,13 @@ public class MyEvent {
     }
 
     public void produceEvents(IListener listener) {
-        list.addItem(listener, () -> {
-            if (isFinished) {
-                eventDone();
-            }
-        });
+        synchronized (list) {
+            list.addItem(listener, () -> {
+                if (isFinished) {
+                    eventDone();
+                }
+            });
+        }
     }
 
     public void startEvent() {
